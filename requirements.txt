@@ -1,0 +1,28 @@
+# CourtEdge — Python deps (conda env: nba-bet, python=3.10)
+# torch is already in the env but NOT used (model is gradient boosting).
+
+# --- Ingestion ---
+nba_api
+requests
+python-dotenv
+
+# --- Data / processing ---
+pandas
+numpy
+pyarrow            # Parquet read/write
+pyspark==3.5.3     # local[*] mode; 3.5.x supports Java 8/11 (4.x needs Java 17)
+
+# --- Modeling ---
+scikit-learn
+xgboost
+matplotlib         # calibration / backtest plots
+
+# --- Storage / delivery ---
+SQLAlchemy         # default SQLite; swap DATABASE_URL for Postgres
+streamlit          # dashboard (deployable web app)
+
+# --- Production extras (not needed for the overnight demo) ---
+# psycopg2-binary  # Postgres driver
+# beautifulsoup4 lxml   # basketball-ref scraping
+# fastapi uvicorn[standard]  # REST API delivery
+# APScheduler      # odds polling scheduler

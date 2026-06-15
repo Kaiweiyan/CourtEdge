@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.env
+.venv/
+# Raw zone is rebuildable from nba_api — not committed.
+data/raw/
+data/*.parquet
+# NOTE: data/courtedge.db and data/artifacts/ ARE committed on purpose, so the
+# dashboard can be served on a fresh clone without rebuilding the pipeline.
+.ipynb_checkpoints/
+.DS_Store
+spark-warehouse/
+metastore_db/

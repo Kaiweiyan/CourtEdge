@@ -1,0 +1,47 @@
+{
+  "elo_baseline": {
+    "n": 897,
+    "log_loss": 0.6158,
+    "brier": 0.2139,
+    "accuracy": 0.6544,
+    "auc": 0.7231
+  },
+  "xgb_raw": {
+    "n": 897,
+    "log_loss": 0.609,
+    "brier": 0.2103,
+    "accuracy": 0.6778,
+    "auc": 0.7314
+  },
+  "xgb_calibrated": {
+    "n": 897,
+    "log_loss": 0.6083,
+    "brier": 0.2098,
+    "accuracy": 0.6689,
+    "auc": 0.7284
+  },
+  "features": [
+    "diff_pts_for",
+    "diff_pts_against",
+    "diff_net",
+    "diff_win_rate",
+    "home_rest",
+    "away_rest",
+    "home_b2b",
+    "away_b2b",
+    "elo_diff",
+    "elo_exp_home"
+  ],
+  "feature_importance": {
+    "elo_exp_home": 0.3116,
+    "elo_diff": 0.2099,
+    "diff_net": 0.0741,
+    "home_b2b": 0.0627,
+    "away_b2b": 0.061,
+    "away_rest": 0.0593,
+    "home_rest": 0.0575,
+    "diff_pts_against": 0.0562,
+    "diff_win_rate": 0.0546,
+    "diff_pts_for": 0.0531
+  }
+}

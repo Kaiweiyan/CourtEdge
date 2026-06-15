@@ -1,0 +1,11 @@
+# Minimal runtime deps to SERVE the dashboard on a fresh clone.
+# No pyspark / no Java / no data rebuild needed — reads the committed
+# data/courtedge.db + data/artifacts/. (Use requirements.txt to rebuild data.)
+streamlit
+pandas
+numpy
+scikit-learn==1.7.2   # pinned to match the committed isotonic.pkl artifact
+xgboost==3.2.0        # pinned to match the committed xgb_model.json
+SQLAlchemy
+nba_api               # only for the team name<->abbr map (static, no network)
+python-dotenv
