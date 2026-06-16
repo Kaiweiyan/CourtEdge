@@ -15,17 +15,336 @@
 \usepackage{mdframed}
 \usepackage{graphicx}
 \usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta}
 \usepackage{booktabs}
 \setlength{\headheight}{15pt}
+
 \begin{document}
 
+% =====================================================================
+% TITLE / PAGE 1  (rubric: GitHub URL + live URL must be on page 1)
+% =====================================================================
 \begin{center}
-{\Large \bf Final Project}\\[6pt]
-\textbf{Name and Student ID:} Kai-Wei Yan / b12902147
+{\Large \bf CourtEdge --- An NBA +EV Betting Analytics Platform}\\[4pt]
+{\large Designing a System That Monetizes Data}\\[8pt]
+\textbf{Name / Student ID:} Kai-Wei Yan / b12902147\\[6pt]
+\begin{tabular}{rl}
+\textbf{GitHub repository:} & \texttt{https://github.com/Kaiweiyan/CourtEdge}\\[2pt]
+\textbf{Live demo:} & \url{http://140.112.30.184:9999}\\
+\end{tabular}
 \end{center}
 
 \hrule
+\vspace{6pt}
 
+\noindent\textit{One-paragraph pitch.} CourtEdge is an analytics platform for \textbf{serious
+recreational NBA bettors} in the US legal-sports-betting market. It does \textbf{not} sell
+``guaranteed picks.'' It ingests NBA stats and multi-sportsbook odds, runs a \emph{calibrated}
+win-probability model, and helps the user bet smarter through four defensible features:
+\textbf{edge detection} (model probability vs.\ market-implied probability), \textbf{line
+shopping} (best price across books), \textbf{CLV tracking} (Closing Line Value --- the real
+long-term skill metric), and \textbf{Kelly bankroll sizing}. The monetized asset is the
+\emph{refined data product}: odds + model probabilities + edge, surfaced in one screen.
 
+\begin{mdframed}
+\small \textbf{Why this framing is defensible.} The NBA market is highly efficient, so a claim
+of ``we beat the market'' is hard to defend. CourtEdge instead promises to help users
+\emph{get the best price, track their CLV, and size bets correctly} --- which provably
+saves/makes money and sidesteps the efficiency trap --- while the calibrated model stays the
+technical centerpiece. We make \textbf{no profit guarantee}; we report calibration and CLV
+honestly.
+\end{mdframed}
+
+% =====================================================================
+\section{Target Customer \textnormal{(Rubric Component 1 --- 20\%)}}
+
+\paragraph{Primary segment.} US-based \emph{serious recreational} NBA bettors: people who
+already bet regularly (accounts at two or more sportsbooks), bet for profit rather than pure
+entertainment, but are not professional syndicates. After the US Supreme Court struck down
+PASPA in May 2018, legal sports betting expanded to roughly 38--39 states plus DC, creating a
+large, growing, English-speaking market essentially from scratch.
+
+\paragraph{The job they are trying to do today.}
+\begin{itemize}[nosep]
+  \item Manually check odds across DraftKings / FanDuel / BetMGM / etc.\ to find the best line.
+  \item Guess whether a line is ``good value'' without a probabilistic baseline.
+  \item Track bets in a spreadsheet --- most do not track CLV at all.
+  \item Size bets by gut feel rather than bankroll math.
+\end{itemize}
+
+\paragraph{Current workarounds.} Spreadsheets, free Reddit picks, scattered odds-comparison
+sites, and expensive incumbents (OddsJam, Action Network, Unabated) at roughly \$10--150/mo.
+
+\paragraph{Why CourtEdge is better than the status quo.} One place that unifies model edge +
+line shopping + CLV tracking + Kelly sizing, with a \emph{transparent, auditable} methodology
+(no ``trust me'' black box). It is cheaper and more focused than the premium incumbents and
+positions on honesty rather than hype.
+
+\paragraph{Secondary segment (future).} Sell the model-probability + edge \textbf{data feed via
+API} to other tool builders (B2B2X). Out of scope for v1 but noted for go-to-market.
+
+% =====================================================================
+\section{Evidence of Demand \& Willingness to Pay \textnormal{(Component 2 --- 25\%)}}
+
+The rubric rewards the \emph{process} from a vague idea to a defensible demand claim, not just
+the conclusion. The full write-up and raw artifacts live in
+\texttt{research/demand\_evidence.md}; this section summarizes the journey.
+
+\paragraph{Step 1 --- Hypothesis.} Serious recreational bettors will pay a monthly subscription
+for a tool that (a) finds the best price across books, (b) flags potentially mispriced lines,
+and (c) tracks CLV and sizes bets correctly --- \emph{without} the scammy ``guaranteed picks''
+framing.
+
+\paragraph{Step 2 --- Is the market real? (public-data analysis)}
+\begin{itemize}[nosep]
+  \item \textbf{Legalisation tailwind:} PASPA struck down May 2018; legal betting now in
+    $\sim$38--39 states + DC --- a newly created, large addressable market.
+  \item \textbf{Market size:} US commercial sports-betting revenue is on the order of
+    \$10B+/year (American Gaming Association); even a small analytics attach-rate is a
+    meaningful TAM.
+  \item \textbf{Engaged communities (proxy for the segment):} r/sportsbook ($\sim$600k+
+    members) with daily line-shopping and bad-beat threads; r/dfsports, Discord groups, and
+    Twitter/X ``betting model'' accounts.
+  \item \textbf{Search intent \& review mining:} Google Trends for \texttt{+EV betting},
+    \texttt{line shopping}, \texttt{NBA betting model}, \texttt{closing line value}; and
+    app-store reviews of incumbents mined for recurring praise (``found me +EV'') and
+    complaints (``too expensive,'' ``cluttered'') $\rightarrow$ unmet needs.
+\end{itemize}
+
+\paragraph{Step 3 --- Will they pay? (competitor pricing as a WTP anchor).} Existing paid
+tools prove willingness to pay (approximate public tiers):
+
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Product} & \textbf{What it does} & \textbf{Approx.\ price} \\
+\midrule
+OddsJam & +EV / arbitrage / line shopping & $\sim$\$75--150 / mo \\
+Unabated & sharp lines, no-vig, line shopping & $\sim$\$50+ / mo \\
+Action Network (PRO) & odds, tracking, picks & $\sim$\$8--13 / mo \\
+Outlier.bet & player props / +EV & freemium + sub \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent The market spans a cheap tracking tier ($\sim$\$10) to a premium +EV tier
+($\sim$\$75--150). CourtEdge's wedge is a focused, transparent, \textbf{mid-price
+($\sim$\$15--25/mo)} +EV + CLV tool that undercuts the premium incumbents while doing the few
+things bettors value most.
+
+\paragraph{Step 4 --- Primary research (survey instrument).} A short questionnaire
+(\texttt{research/}) targets 5--15 bettors: number of sportsbook accounts and whether they
+line-shop every bet; whether they track CLV (expected to be low --- the gap we fill); how they
+size bets; what they have paid for tooling; and a van-Westendorp-style price test at
+\$10/\$20/\$30/mo. Responses are summarized as \% who line-shop, \% who track CLV, and the
+price point with the best yes-rate.
+
+\paragraph{Step 5 --- Non-monetary value (time saved).} Manually checking $\sim$4 books $\times$
+$\sim$6 games/night is several minutes/night of comparison; CourtEdge collapses that to one
+screen. Minutes saved $\times$ nights/season complements the monetary WTP estimate.
+
+\paragraph{Conclusion.} A large, newly legal, engaged market already pays \$10--150/mo for
+adjacent tools, yet most bettors do not track CLV and line-shop inconsistently. That gap, plus
+a transparent, no-hype, mid-price position, is a defensible wedge. The honest risk
+(\cref{sec:gtm}) is a weak data moat and the efficiency of the market itself.
+
+\begin{mdframed}\small
+\textbf{Honesty note on figures.} Market-size, state-count, subscriber and pricing numbers
+above are publicly reported approximations used to size the opportunity. Each is flagged
+\texttt{[verify]} in the repository's demand-evidence write-up (\texttt{research/}) and should
+be re-checked against a dated primary source before external use.
+\end{mdframed}
+
+% =====================================================================
+\section{Go-to-Market Difficulties \textnormal{(Bonus Component 3 --- up to +10\%)}}
+\label{sec:gtm}
+
+\begin{itemize}[nosep]
+  \item \textbf{Market efficiency / trust.} NBA closing lines are near-optimal, so we must
+    \emph{not} promise profit. Trust is earned via a transparent, auditable CLV track record
+    and open methodology --- the differentiator from the ``tout'' scam industry.
+  \item \textbf{Legal \& compliance.} CourtEdge is \textbf{analytics only --- it never accepts
+    wagers}, which keeps it out of gambling-operator licensing. It must still respect
+    state-by-state advertising rules, affiliate disclosure, responsible-gambling messaging,
+    age-gating (21+), and each book's Terms of Service.
+  \item \textbf{Data-acquisition cost \& risk.} \texttt{nba\_api} is unofficial and
+    rate-limited; The Odds API free tier is small ($\sim$500 req/mo), so polling for line
+    movement gets expensive at scale --- cost scales with \emph{polling frequency $\times$
+    games $\times$ books}.
+  \item \textbf{Cold-start.} Historical seasons are needed to backfill before the model is
+    credible, and a CLV track record needs time to accumulate.
+  \item \textbf{Competition \& moats.} Incumbents are well-funded and the underlying data is
+    largely public --- the moat is weak. We are honest about this: the edge is focus,
+    transparency, and price, not data exclusivity.
+  \item \textbf{Unit economics.} At 100 users the binding cost is the odds-API tier + a single
+    small VM (the demo runs on one workstation); at 1{,}000 users odds polling and DB load
+    dominate, motivating caching, a tapering poll cadence, and a paid odds tier. Break-even is
+    driven by odds-API spend, which is controllable by polling discipline.
+\end{itemize}
+
+% =====================================================================
+\section{System Design \textnormal{(Rubric Component 4 --- 40\%)}}
+
+\subsection{Architecture overview}
+
+The system follows the course's canonical flow: \textbf{ingestion $\rightarrow$ storage
+$\rightarrow$ processing $\rightarrow$ delivery}. \Cref{fig:arch} shows the end-to-end pipeline
+with the file that implements each stage.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[
+  box/.style={draw, rounded corners, align=left, text width=14.5cm, fill=blue!4,
+              inner sep=6pt, font=\small},
+  arr/.style={-{Latex[length=2.5mm]}, thick}
+]
+\node[box] (ing) {\textbf{INGESTION}\\
+  \texttt{nba\_api} multi-season game logs (\texttt{src/ingestion/fetch\_games.py});
+  full-season Play-by-Play V3 (\texttt{fetch\_pbp.py}); The Odds API live moneyline
+  (\texttt{src/odds/odds\_api.py}).};
+\node[box, below=0.45cm of ing] (sto) {\textbf{STORAGE}\\
+  Raw zone: partitioned Parquet under \texttt{data/raw/}. Warehouse: SQLite by default /
+  Postgres via \texttt{DATABASE\_URL} (SQLAlchemy). Tables: \texttt{games}, \texttt{team\_games},
+  \texttt{team\_form}, \texttt{game\_elo}, \texttt{predictions\_test},
+  \texttt{pbp\_game\_features}, \texttt{pbp\_team\_game}.};
+\node[box, below=0.45cm of sto] (pro) {\textbf{PROCESSING}\\
+  PySpark window functions $\rightarrow$ rolling pre-game form (\texttt{features\_spark.py});
+  PySpark aggregation over $\sim$599k PBP events (\texttt{pbp\_spark.py}); Elo ratings
+  (\texttt{elo.py}); XGBoost + isotonic calibration, honest time split (\texttt{train.py});
+  quant layer edge/EV/Kelly/CLV (\texttt{quant.py}).};
+\node[box, below=0.45cm of pro] (del) {\textbf{DELIVERY}\\
+  Streamlit dashboard (\texttt{app/dashboard.py}): Today's Board (edge, best price, Kelly),
+  Model Performance (metrics + calibration), How It Works.};
+\draw[arr] (ing) -- (sto);
+\draw[arr] (sto) -- (pro);
+\draw[arr] (pro) -- (del);
+\end{tikzpicture}
+\caption{CourtEdge end-to-end architecture.}
+\label{fig:arch}
+\end{figure}
+
+\subsection{Data sources}
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Source} & \textbf{What} & \textbf{Access / risk} \\
+\midrule
+\texttt{nba\_api} & game logs, play-by-play & free wrapper; unofficial, rate-limited \\
+The Odds API & moneyline across US books & REST; free tier $\sim$500 req/mo \\
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent We ingest five recent seasons (2020--21 \dots 2024--25): \textbf{5{,}995 games} and
+\textbf{12{,}000 team-game rows}. For the big-data processing demo we ingest the
+\textbf{full 2023--24 play-by-play: 598{,}705 event rows across 1{,}230 games}
+($\sim$486 events/game).
+
+\subsection{Storage --- why these tools fit the scale}
+The raw zone is columnar \textbf{Parquet}, partitioned by season --- efficient for Spark reads
+and the ``data lake'' story; the documented production path swaps it for MinIO/S3. The
+\textbf{warehouse} holds curated, query-served tables; we use SQLite by default for
+zero-friction reproducibility, and SQLAlchemy makes the switch to PostgreSQL a one-line
+\texttt{DATABASE\_URL} change. Play-by-play stays in Parquet (too row-heavy for a transactional
+store) and is processed by Spark.
+
+\subsection{Processing --- the legitimate big-data core}
+\textbf{PySpark} (running \texttt{local[*]}) builds rolling pre-game team-form features with
+\emph{window functions} partitioned by team and ordered by date, using
+\texttt{rowsBetween(-N,\,-1)} so every feature uses only the \emph{previous} $N$ games
+(no leakage). The same DataFrame code aggregates the \textbf{598{,}705-row} play-by-play table
+into per-game and per-team descriptors (lead changes, max margin, OT flag, FG\%, threes)
+--- the genuinely distributed workload; identical code scales to a cluster and to all-time PBP
+($\sim$10M+ rows). \textbf{Elo} ratings are computed sequentially in pandas (each game updates
+ratings, with season-to-season regression toward the mean).
+
+\paragraph{Model.} An \textbf{XGBoost} classifier over ten features (Elo expectation and
+difference, rolling net-rating, points, and win-rate differentials, rest days, back-to-back
+flags) with a
+strictly time-ordered split: train on the oldest games, calibrate on a validation slice with
+\textbf{isotonic regression}, and test on the most recent season. Calibration is essential
+because edge $=$ model prob $-$ market-implied prob is only meaningful when the model
+probability is well calibrated.
+
+\subsection{The quant layer (exact formulas --- this is the product)}
+American odds $o$ convert to \textbf{implied probability} and \textbf{decimal odds} as
+\[
+  \text{imp}(o)=\begin{cases}\dfrac{100}{o+100}, & o>0\\[6pt]\dfrac{-o}{-o+100}, & o<0\end{cases}
+  \qquad
+  d(o)=\begin{cases}\dfrac{o}{100}+1, & o>0\\[6pt]\dfrac{100}{-o}+1, & o<0.\end{cases}
+\]
+A two-way market is \textbf{de-vigged} to fair probabilities by
+$p^{\text{fair}}_A=\text{imp}_A/(\text{imp}_A+\text{imp}_B)$. With model probability $p$ and
+$b=d(o)-1$:
+\[
+  \underbrace{\text{edge}=p-\text{imp}(o)}_{\text{displayed}},\quad
+  \underbrace{\text{EV}=p\,b-(1-p)}_{\text{per unit staked}},\quad
+  \underbrace{f^{\*}=\frac{b\,p-(1-p)}{b}}_{\text{Kelly fraction}} .
+\]
+We bet only when EV $>0$, stake $0.25\times$ Kelly capped at $5\%$ of bankroll, and measure
+\textbf{CLV} $=\text{imp}(\text{closing})-\text{imp}(\text{taken})$ (positive $\Rightarrow$ you
+beat the close). All functions are pure and unit-tested in \texttt{src/model/quant.py}.
+
+\subsection{Delivery}
+A \textbf{Streamlit} dashboard serves three pages: \emph{Today's Board} (model probability vs.\
+market, best price across books, edge, EV, Kelly stake), \emph{Model Performance} (out-of-sample
+metrics + calibration curve --- the trust layer), and \emph{How It Works}. When an Odds API key
+is set the board scores live upcoming games; off-season or keyless it falls back to a clearly
+labelled \emph{sample board} built from real held-out predictions, so the UI always renders and
+the edge math stays real. The app is deployed on a school workstation (see page 1).
+
+\subsection{Results (held-out most-recent season, out-of-sample)}
+The test set is the 897 most recent games, never seen in training or calibration.
+
+\begin{center}\small
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+\textbf{Model} & \textbf{n} & \textbf{Accuracy} & \textbf{Log loss} & \textbf{Brier} & \textbf{AUC} \\
+\midrule
+Elo baseline        & 897 & 0.654 & 0.616 & 0.214 & 0.723 \\
+XGBoost (raw)        & 897 & 0.678 & 0.609 & 0.210 & 0.731 \\
+XGBoost (calibrated) & 897 & \textbf{0.669} & \textbf{0.608} & \textbf{0.210} & \textbf{0.728} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent \textbf{Honest read.} The NBA market is highly efficient, so a calibrated model lands
+around 65--68\% accuracy / AUC $\approx 0.73$ and only \emph{modestly} beats Elo. The top
+features are the Elo win-expectation ($\approx0.31$ importance), Elo difference ($\approx0.21$),
+and rolling net-rating differential ($\approx0.07$) --- i.e.\ strength + recent form, as
+expected. We make \textbf{no} profit guarantee; the product value is surfacing the
+\emph{occasional} mispriced line, line-shopping the best price, and correct (Kelly) sizing. The
+north-star skill metric is CLV. The calibration curve (\cref{fig:cal}) shows the calibrated
+model tracks the diagonal closely, which is what makes the edge comparison trustworthy.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{data/artifacts/calibration.png}
+\caption{Reliability curve on the held-out test season (closer to the diagonal is better).}
+\label{fig:cal}
+\end{figure}
+
+\subsection{Honest scoping and the scaling path (10$\times$ / 100$\times$)}
+What was built is a complete \emph{thin slice} end-to-end. Deliberately descoped items map
+directly to the production architecture: SQLite $\rightarrow$ Postgres + MinIO/S3; Spark
+\texttt{local[*]} $\rightarrow$ a cluster (YARN/K8s) over all-time play-by-play
+($\sim$10M+ rows); Streamlit $\rightarrow$ FastAPI + Next.js with auth; and a daily Airflow DAG
+plus a Kafka odds stream for live line-movement and automated CLV capture. Because the Spark
+code is plain DataFrame/window-function code, it scales unchanged.
+
+\paragraph{Reproducibility.} The repository commits the built warehouse
+(\texttt{data/courtedge.db}) and model artifacts (\texttt{data/artifacts/}) so a fresh clone
+serves in $\sim$1 minute via \texttt{requirements-serve.txt} (no Spark/Java). A full rebuild is
+one command --- \texttt{bash run\_pipeline.sh} --- and individual steps are documented in the
+README. API keys are read from \texttt{.env} (git-ignored) with a committed \texttt{.env.example}.
+
+% =====================================================================
+\section{Conclusion}
+CourtEdge turns public NBA stats and sportsbook odds into a refined, monetizable data product
+for a specific, paying segment, defended by transparent methodology rather than hype. The
+technical core --- distributed feature engineering over $\sim$599k play-by-play events, a
+calibrated win-probability model evaluated without leakage, and a unit-tested quant layer ---
+is delivered through a deployed dashboard. We are honest about the system's limits: a highly
+efficient market, a weak data moat, and a model that only modestly beats Elo. The value is not
+a magic edge but better prices, correct sizing, and an auditable CLV record.
 
 \end{document}

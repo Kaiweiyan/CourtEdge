@@ -42,7 +42,10 @@ def fmt_pct(x):
 # ----------------------------------------------------------------------------- #
 st.sidebar.title("🏀 CourtEdge")
 st.sidebar.caption("NBA +EV betting analytics — *find value, don't buy picks*")
-page = st.sidebar.radio("", ["Today's Board", "Model Performance", "How It Works"])
+page = st.sidebar.radio(
+    "Page", ["Today's Board", "Model Performance", "How It Works"],
+    label_visibility="collapsed",
+)
 st.sidebar.markdown("---")
 st.sidebar.caption(
     "Analytics only — we never accept wagers. 21+. "
@@ -83,7 +86,7 @@ if page == "Today's Board":
             "ev/unit", "Kelly stake"]
     if "result" in show:
         cols.append("result")
-    st.dataframe(show[cols], use_container_width=True, hide_index=True)
+    st.dataframe(show[cols], width="stretch", hide_index=True)
 
     st.caption(
         f"Stake = {KELLY_FRACTION:g}× Kelly, capped at {fmt_pct(MAX_STAKE_FRAC)} of bankroll. "
@@ -104,7 +107,7 @@ elif page == "Model Performance":
     md = pd.DataFrame(
         {k: m[k] for k in ["elo_baseline", "xgb_raw", "xgb_calibrated"]}
     ).T[["n", "accuracy", "log_loss", "brier", "auc"]]
-    st.dataframe(md, use_container_width=True)
+    st.dataframe(md, width="stretch")
 
     st.markdown(
         "**Honest read:** the NBA market is highly efficient, so a calibrated model "

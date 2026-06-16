@@ -399,7 +399,7 @@ Due-tomorrow, solo → shipped **Tier 0** end-to-end. Report matches what exists
   per-team descriptors (lead changes, max margin, OT, FG%/threes) → `pbp_game_features`,
   `pbp_team_game`. This is the genuine distributed-processing workload.
 - **Model** (`src/model/train.py`): XGBoost + isotonic calibration, honest time split.
-  Held-out test season: **acc 0.675, log loss 0.606, Brier 0.209, AUC 0.731**, beating an
+  Held-out test season: **acc 0.669, log loss 0.608, Brier 0.210, AUC 0.728**, beating an
   Elo baseline (0.654) — realistic, no overfit miracle.
 - **Quant** (`src/model/quant.py`): implied/de-vig/edge/EV/Kelly/CLV (unit-tested).
 - **Delivery** (`app/dashboard.py`): Streamlit web app — Today's Board (edge/price/Kelly),

@@ -8,7 +8,6 @@ calibrated win-probability model, and helps the user bet smarter via **edge dete
 (model prob vs. market-implied prob), **line shopping**, **Kelly bankroll sizing**, and
 **CLV** (Closing Line Value) — the real long-term skill metric.
 
-- **GitHub:** `<add your repo URL here>`
 - **Live demo:** `<add your workstation URL here>`
 
 See [`spec.md`](spec.md) for the full business + system write-up and
@@ -40,7 +39,7 @@ Bball-Ref┘                          └─ SQLite / Postgres ┘   + Elo + XGB
 | Model | Accuracy | Log loss | Brier | AUC |
 |---|---|---|---|---|
 | Elo baseline | 0.654 | 0.616 | 0.214 | 0.723 |
-| XGBoost (calibrated) | **0.675** | **0.606** | **0.209** | **0.731** |
+| XGBoost (calibrated) | **0.669** | **0.608** | **0.210** | **0.728** |
 
 **Honest read:** the NBA market is highly efficient, so a calibrated model lands around
 65–68% accuracy and only modestly beats Elo. We make **no** profit guarantee — the value
@@ -89,7 +88,7 @@ dashboard does **not** import PySpark. So a fresh clone serves in ~1 minute:
 
 ```bash
 git clone <your repo>           # on the workstation
-cd final
+cd CourtEdge
 python -m venv .venv && source .venv/bin/activate   # or: conda create -n courtedge python=3.10
 pip install -r requirements-serve.txt               # lightweight; no pyspark
 bash serve.sh 8501                                  # binds 0.0.0.0:8501
@@ -114,7 +113,7 @@ src/odds/                 # The Odds API client
 app/dashboard.py          # Streamlit web app
 research/                 # demand evidence write-up
 docs/                     # architecture notes
-data/                     # raw Parquet, SQLite db, model artifacts (gitignored)
+data/                     # raw Parquet (gitignored); courtedge.db + artifacts/ committed for fast serve
 ```
 
 ## Notes & ethics
