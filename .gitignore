@@ -11,3 +11,11 @@ data/*.parquet
 .DS_Store
 spark-warehouse/
 metastore_db/
+# LaTeX build artifacts (the compiled PDF is kept; intermediates are not)
+*.aux
+*.log
+*.toc
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz

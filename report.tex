@@ -26,10 +26,9 @@
 % =====================================================================
 \begin{center}
 {\Large \bf CourtEdge --- An NBA +EV Betting Analytics Platform}\\[4pt]
-{\large Designing a System That Monetizes Data}\\[8pt]
 \textbf{Name / Student ID:} Kai-Wei Yan / b12902147\\[6pt]
 \begin{tabular}{rl}
-\textbf{GitHub repository:} & \texttt{https://github.com/Kaiweiyan/CourtEdge}\\[2pt]
+\textbf{GitHub repository:} & \url{https://github.com/Kaiweiyan/CourtEdge}\\[2pt]
 \textbf{Live demo:} & \url{http://140.112.30.184:9999}\\
 \end{tabular}
 \end{center}
@@ -56,7 +55,7 @@ honestly.
 \end{mdframed}
 
 % =====================================================================
-\section{Target Customer \textnormal{(Rubric Component 1 --- 20\%)}}
+\section{Target Customer}
 
 \paragraph{Primary segment.} US-based \emph{serious recreational} NBA bettors: people who
 already bet regularly (accounts at two or more sportsbooks), bet for profit rather than pure
@@ -84,7 +83,7 @@ positions on honesty rather than hype.
 API} to other tool builders (B2B2X). Out of scope for v1 but noted for go-to-market.
 
 % =====================================================================
-\section{Evidence of Demand \& Willingness to Pay \textnormal{(Component 2 --- 25\%)}}
+\section{Evidence of Demand \& Willingness to Pay}
 
 The rubric rewards the \emph{process} from a vague idea to a defensible demand claim, not just
 the conclusion. The full write-up and raw artifacts live in
@@ -156,7 +155,7 @@ be re-checked against a dated primary source before external use.
 \end{mdframed}
 
 % =====================================================================
-\section{Go-to-Market Difficulties \textnormal{(Bonus Component 3 --- up to +10\%)}}
+\section{Go-to-Market Difficulties}
 \label{sec:gtm}
 
 \begin{itemize}[nosep]
@@ -183,7 +182,7 @@ be re-checked against a dated primary source before external use.
 \end{itemize}
 
 % =====================================================================
-\section{System Design \textnormal{(Rubric Component 4 --- 40\%)}}
+\section{System Design}
 
 \subsection{Architecture overview}
 
@@ -278,7 +277,7 @@ $b=d(o)-1$:
 \[
   \underbrace{\text{edge}=p-\text{imp}(o)}_{\text{displayed}},\quad
   \underbrace{\text{EV}=p\,b-(1-p)}_{\text{per unit staked}},\quad
-  \underbrace{f^{\*}=\frac{b\,p-(1-p)}{b}}_{\text{Kelly fraction}} .
+  \underbrace{f^{\star}=\frac{b\,p-(1-p)}{b}}_{\text{Kelly fraction}} .
 \]
 We bet only when EV $>0$, stake $0.25\times$ Kelly capped at $5\%$ of bankroll, and measure
 \textbf{CLV} $=\text{imp}(\text{closing})-\text{imp}(\text{taken})$ (positive $\Rightarrow$ you

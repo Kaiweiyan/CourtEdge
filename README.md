@@ -8,7 +8,8 @@ calibrated win-probability model, and helps the user bet smarter via **edge dete
 (model prob vs. market-implied prob), **line shopping**, **Kelly bankroll sizing**, and
 **CLV** (Closing Line Value) — the real long-term skill metric.
 
-- **Live demo:** `<add your workstation URL here>`
+- **GitHub:** <https://github.com/Kaiweiyan/CourtEdge>
+- **Live demo:** <http://140.112.30.184:9999>
 
 See [`spec.md`](spec.md) for the full business + system write-up and
 [`research/demand_evidence.md`](research/demand_evidence.md) for the demand analysis.
@@ -18,11 +19,33 @@ See [`spec.md`](spec.md) for the full business + system write-up and
 ## Architecture (ingestion → storage → processing → delivery)
 
 ```
-nba_api ─┐                          ┌─ Parquet raw zone ─┐
-Odds API ─┼─► ingestion (Python) ──►│                    ├─► PySpark window features ─┐
-Bball-Ref┘                          └─ SQLite / Postgres ┘   + Elo + XGBoost(calib.)  │
-                                                                                       ▼
-                                              Streamlit dashboard ◄── quant layer (edge/EV/Kelly)
+┌──────────────────────────────────────────────────┐
+│ INGESTION                                        │
+│ nba_api game logs + Play-by-Play V3,             │
+│ The Odds API live moneyline                      │
+└──────────────────────────────────────────────────┘
+                          │
+                          ▼
+┌──────────────────────────────────────────────────┐
+│ STORAGE                                          │
+│ Raw zone: Parquet (data/raw/, by season)         │
+│ Warehouse: SQLite (default) / Postgres           │
+└──────────────────────────────────────────────────┘
+                          │
+                          ▼
+┌──────────────────────────────────────────────────┐
+│ PROCESSING                                       │
+│ PySpark rolling form features (no leakage)       │
+│ + PBP aggregation (~599k events) + Elo           │
+│ + XGBoost (isotonic calib.) + quant layer        │
+└──────────────────────────────────────────────────┘
+                          │
+                          ▼
+┌──────────────────────────────────────────────────┐
+│ DELIVERY                                         │
+│ Streamlit dashboard: Today's Board /             │
+│ Model Performance / How It Works                 │
+└──────────────────────────────────────────────────┘
 ```
 
 | Layer | Tech | Why |
