@@ -2,6 +2,7 @@ __pycache__/
 *.pyc
 .env
 .venv/
+.vscode/
 # Raw zone is rebuildable from nba_api — not committed.
 data/raw/
 data/*.parquet
